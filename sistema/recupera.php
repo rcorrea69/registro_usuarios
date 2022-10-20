@@ -2,6 +2,7 @@
 	
 	require 'funcs/conexion.php';
 	require 'funcs/funcs.php';
+	require 'enviar_mail_usuario.php';
 	$errors=array();
 
 	if(!empty ($_POST)){
@@ -21,14 +22,15 @@
 				$url='http://'.$_SERVER["SERVER_NAME"].'/registro_usuarios/sistema/cambia_pass.php?user_id='.$user_id.'&token='.$token;
 				$asunto = 'Recuperar Password - Sistema de usuarios';
 				$cuerpo ="Hola $nombre : <br/><br/>Se ha solicitado un reinicio de contraseña. <br/><br/>Para restaurar la contraseña , visita la siguiente dirección: <a href='$url'>$url</a>";
-				if(enviarEmail($email,$nombre,$asunto,$cuerpo))
+				if(enviarmail($email,$nombre,$asunto,$cuerpo))
 				{
 					echo "Hemos enviado un correo elctronico a la dirección $email para restrablecer tu password.<br />";
 					echo "<a href='index.php'> Iniciar Sesion</a>";
 					exit;
-				} else {
-					$errors[]="Error al enviar Email";
-				}
+				} 
+				// else {
+				// 	$errors[]="Error al enviar Email";
+				// }
 			}else {
 				$errors[]="No existe el correo electronico";
 			}

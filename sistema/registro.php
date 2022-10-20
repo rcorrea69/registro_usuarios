@@ -2,7 +2,7 @@
 	
 	require 'funcs/conexion.php';
 	require 'funcs/funcs.php';
-	
+	require 'enviar_mail_usuario.php';
 	$errors = array();
 	
 	//Aqui va el código PHP del Vídeo
@@ -13,17 +13,18 @@
 		$password = $mysqli -> real_escape_string($_POST['password']);
 		$con_password = $mysqli -> real_escape_string($_POST['con_password']);
 		$email = $mysqli -> real_escape_string($_POST['email']);
-		$captcha = $mysqli -> real_escape_string($_POST['g-recaptcha-response']);
-		$secret="6LcaRMkaAAAAAJn4HBrla8fg3cCBqOnlcB01bM-d";
+
+		// $captcha = $mysqli -> real_escape_string($_POST['g-recaptcha-response']);
+		// $secret="6LcaRMkaAAAAAJn4HBrla8fg3cCBqOnlcB01bM-d";
 
 		$activo=0;
 		$tipo_usuario=2;
 		//$secret="";
 
-		if(!$captcha)
-		{
-			$errors[]=" Por favor verifique el captcha";
-		}
+		// if(!$captcha)
+		// {
+		// 	$errors[]=" Por favor verifique el captcha";
+		// }
 
 		if(isNull($nombre, $usuario, $password, $con_password, $email))
 		{
@@ -52,12 +53,12 @@
 
 		if(count($errors)==0)
 		{
-			$response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret&response=$captcha");
+			// $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret&response=$captcha");
 			
-			$arr=json_decode($response,true);
+			// $arr=json_decode($response,true);
 
-			if($arr['success'])
-			{
+			// if($arr['success'])
+			// {
 				$pass_hash = hashPassword($password);
 				$token = generateToken();
 
@@ -70,22 +71,22 @@
 					$asunto="Activar Cuenta - Sistema de registro de usuarios";
 					$cuerpo="Estimado $nombre : <br/><br/> Para continuar con el proceso de registro, es indispensable de click en el siguiente link <a href=$url> Activar Cuenta </a>";
 
-					if(enviarEmail($email, $nombre, $asunto, $cuerpo)){
+					if(enviarmail($email, $nombre, $asunto, $cuerpo)){
 						echo "Para terminar el proceso de registro siga las instrucciones que le hemos enviado la dirección de correo electrocino: $email";
 
 						echo "<br><a href='index.php'>Iniciar Sesion </a>";
 						exit;
 					} else {
-						$errors[]="Eroor al enviar Email";
+						// $errors[]="Eroor al enviar Email";
 					}
 
 				} else{
 					$errors[]="Error al registrar el usuario";
 				}
 
-			}else{
-				$errors[] = "Error al Comprobar el Captcha";
-			}
+			// }else{
+			// 	$errors[] = "Error al Comprobar el Captcha";
+			// }
 		}
 
 
@@ -105,12 +106,12 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css" >
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css" >
 		<script src="js/bootstrap.min.js" ></script>
-		<script type="text/javascript">
+		<!-- <script type="text/javascript">
   			var onloadCallback = function() {
 				alert("grecaptcha is ready!");
 			};
-		</script>
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		</script> -->
+		<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 		
 
 
